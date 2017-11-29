@@ -40,6 +40,13 @@ def create_empty_dir():
     print("Config directory not found, i\'we created new one for you (" + CONF_DIR + ")")
 
 
+def parse_config(config):
+    conf = {}
+    for line in config:
+        line = line.strip()
+
+
+
 # пытаемся создать новую директорию и новый файл конфига
 try:
     create_empty_dir()
@@ -49,7 +56,7 @@ except FileExistsError:  # значит директория уже есть
     try:
         file = open(CONF_DIR + CONF_NAME, 'r')
         content = file.readlines()
-        print(content)
+        print(parse_config(content))
     except FileNotFoundError:  # значит нет файла конфига
         create_empty_config()
         bye()
