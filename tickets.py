@@ -1,6 +1,8 @@
 import requests
 from bs4 import BeautifulSoup
-
+import time
+import notify2
+import os
 from config import *
 
 

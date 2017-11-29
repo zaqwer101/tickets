@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-import time
-import notify2
 
 from tickets import *
 
