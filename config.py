@@ -1,3 +1,4 @@
+import re
 from pathlib import Path
 import os
 
@@ -40,12 +41,25 @@ def create_empty_dir():
     print("Config directory not found, i\'we created new one for you (" + CONF_DIR + ")")
 
 
-def parse_config(config):
+def parse_config(config): # крутой алгоритм, над которым я работал несколько дней (я не очень умный)
     conf = {}
     for line in config:
-        line = line.strip()
+        a = line.split('#')
+        if len(a) == 1:
+            data = line
+        elif len(a) > 1 and a[0] == '':
+            data = ''
+        elif len(a) > 1 and a[0] != '':
+            data = a[0]
 
-
+        if data != '':
+            data = re.sub('[\s+]', '', data)
+            for a in data.split(';'):
+                if a != '':
+                    var = a.split('=')[0]
+                    val = a.split('=')[1]
+                    conf[var] = val
+    return conf
 
 # пытаемся создать новую директорию и новый файл конфига
 try:
