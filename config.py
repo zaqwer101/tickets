@@ -3,15 +3,12 @@ from pathlib import Path
 import os
 from os.path import exists
 
-
 # дефайним Изначальные Директивы
 LOGIN = ""
 PASSWORD = ""
 URL = "https://my.ispsystem.com/billmgr?"
 TIMEOUT = 10
 
-def fine():
-    pass
 
 class ConfigIsNotGood(Exception):
     pass
@@ -29,17 +26,17 @@ def bye():
     print("Bye!")
 
 
-def create_config():
+def create_config(_LOGIN=LOGIN, _PASSWORD='', _URL=URL, _TIMEOUT='10'):
     if exists(CONF_DIR):
-        fine()
         if exists(CONF_DIR + CONF_NAME):
             os.remove(CONF_DIR + CONF_NAME)
             print("Предыдущий конфиг удален")
     else:
-        create_dir()
+        os.mkdir(CONF_DIR)
 
     file = open(CONF_DIR + CONF_NAME, 'w')
-    print("Создал дефолтный конфиг в " + CONF_DIR + CONF_NAME + ', но дальше вы не пройдете, пока не заполните бумаги:\n')
+    print(
+        "Создал дефолтный конфиг в " + CONF_DIR + CONF_NAME + ', но дальше вы не пройдете, пока не заполните бумаги:\n')
     url = input("URL биллинга? (По умолчанию - ISPsystem)\n")
     login = input("Логин в биллинге?\n")
     password = input("Пароль от аккаунта?\n")
@@ -47,28 +44,27 @@ def create_config():
     if q == 'y':
         print("Отлично, да будет так.")
     elif q == 'n':
-        print("Ну тогда сам руками поменяешь в конфиге.")
+        print("Ну тогда сам руками поменяешь в конфиге.\n")
     else:
-        print("Ты бы ещё консервных банок насобирал! Будет по умолчанию значит.")
+        print("Ты бы ещё консервных банок насобирал! Будет по умолчанию значит.\n")
 
     if url != '':
-        URL = url
+        _URL = url
     if login != '':
-        LOGIN = login
-    if password!= '':
-        PASSWORD = password
+        _LOGIN = login
+    if password != '':
+        _PASSWORD = password
 
-    file.write("URL = " + URL + ";\n")
-    file.write("LOGIN = " + LOGIN + ";\n")
-    file.write("PASSWORD = " + PASSWORD + ";\n")
-    file.write("TIMEOUT = " + TIMEOUT + ";\n")
+    file.write("URL = " + _URL + ";\n")
+    file.write("LOGIN = " + _LOGIN + ";\n")
+    file.write("PASSWORD = " + _PASSWORD + ";\n")
+    file.write("TIMEOUT = " + _TIMEOUT + ";\n")
 
-
-def create_dir():
-    os.makedirs(CONF_DIR)
+    print("\nДа будет так.")
 
 
-
+# Работает отличненько, но:
+# TODO: Валидатор вводимых значений
 def read_config(config):  # крутой алгоритм, над которым я работал несколько дней (я не очень умный)
     conf = {}
     for line in config:
@@ -89,19 +85,11 @@ def read_config(config):  # крутой алгоритм, над которым
                     conf[var] = val
 
     # теперь нужно проверить, всё ли в конфиге хорошо
-
+    # Вот тут то и нужен валидатор!
     return conf
 
-if exists(CONF_DIR):
-    if exists(CONF_DIR + CONF_NAME):
-        conf = read_config(open(CONF_DIR + CONF_NAME, 'r').readlines())
-    else:
-        oops("Конфига не существует")
-        create_config()
-        print("Создан дефолтный конфиг")
-        bye()
-else:
-    oops("Директории не существует")
-    create_dir()
-    print("Создана директория\nСоздан дефолтный конфиг")
-    bye()
+
+create_config()
+config = open(CONF_DIR + CONF_NAME, 'r')
+print(read_config(config.readlines()))
+bye()
