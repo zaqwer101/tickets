@@ -86,6 +86,10 @@ def read_config(config):  # крутой алгоритм, над которым
 
     # теперь нужно проверить, всё ли в конфиге хорошо
     # Вот тут то и нужен валидатор!
+    try:
+        conf['TIMEOUT'] = int(conf['TIMEOUT'])
+    except Exception as e:
+        print(e)
     return conf
 
 
