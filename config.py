@@ -115,6 +115,6 @@ def read_config():  # крутой алгоритм, над которым я р
     try:
         conf['TIMEOUT'] = int(conf['TIMEOUT'])
     except Exception as e:
-        log(e + " при попытке конвертации типа директивы TIMEOUT")
+        log("Ошибка при попытке конвертации типа директивы TIMEOUT")
         conf['TIMEOUT'] = TIMEOUT
     return conf

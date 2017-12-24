@@ -27,7 +27,7 @@ def get_response(login, password, url):
 
 # получаем список тикетов, построенных в класс Ticket
 def get_tickets():
-    response = get_response()
+    response = get_response(config["LOGIN"], config["PASSWORD"], config["URL"])
     soup = BeautifulSoup(response, "xml")
     tickets = soup.find_all("elem")
     list = []
