@@ -42,7 +42,7 @@ while True:
 
     # тут обрабатываем тикеты
     for d in new_tickets:
-        notify2.Notification(d.client, message=d.title).show()
+        notify2.Notification(d.client, message=(d.title + "\nТеперь их " + len(tickets))).show()
 
     old = new_ids
     time.sleep(TIMEOUT)

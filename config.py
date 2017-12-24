@@ -1,3 +1,9 @@
+##################
+# DON'T USE THE FORCE, TRY TO THINK
+# AND REMEMBER
+#   JUST MONIKA
+##################
+
 import re
 from pathlib import Path
 import os
@@ -9,28 +15,40 @@ PASSWORD = ""
 URL = "https://my.ispsystem.com/billmgr?"
 TIMEOUT = 10
 
-
-class ConfigIsNotGood(Exception):
-    pass
-
-
 CONF_DIR = str(Path.home()) + "/.config/tickets/"
 CONF_NAME = "tickets"
 
 
+def log(text):
+    print(text)
+
+
 def oops(e):
-    print("Oops!\n" + str(e))
+    log("Oops!\n" + str(e))
+
+
+def check_config():
+    if exists(CONF_DIR):
+        if exists(CONF_DIR + CONF_NAME):
+            log("Конфиг найден, отлично!")
+            return True
+        else:
+            log("Конфиг не найдет, не отлично!")
+            return False
+    else:
+        log("Директория конфига не найдена, не отлично!")
+        return False
 
 
 def bye():
-    print("Bye!")
+    log("Bye!")
 
 
-def create_config(_LOGIN=LOGIN, _PASSWORD='', _URL=URL, _TIMEOUT='10'):
+def create_config(_LOGIN=LOGIN, _PASSWORD=PASSWORD, _URL=URL, _TIMEOUT='10'):
     if exists(CONF_DIR):
         if exists(CONF_DIR + CONF_NAME):
             os.remove(CONF_DIR + CONF_NAME)
-            print("Предыдущий конфиг удален")
+            log("Предыдущий конфиг удален")
     else:
         os.mkdir(CONF_DIR)
 
@@ -65,7 +83,15 @@ def create_config(_LOGIN=LOGIN, _PASSWORD='', _URL=URL, _TIMEOUT='10'):
 
 # Работает отличненько, но:
 # TODO: Валидатор вводимых значений
-def read_config(config):  # крутой алгоритм, над которым я работал несколько дней (я не очень умный)
+def read_config():  # крутой алгоритм, над которым я работал несколько дней (я не очень умный)
+    file = open(CONF_DIR + CONF_NAME, 'r')
+    config = file.readlines()
+    status = check_config()
+    if status:
+        log("Ок, читаем конфиг")
+    else:
+        log("А мне не понравился конфиг, создадим новый")
+        create_config()
     conf = {}
     for line in config:
         a = line.split('#')
@@ -89,11 +115,6 @@ def read_config(config):  # крутой алгоритм, над которым
     try:
         conf['TIMEOUT'] = int(conf['TIMEOUT'])
     except Exception as e:
-        print(e)
+        log(e + " при попытке конвертации типа директивы TIMEOUT")
+        conf['TIMEOUT'] = TIMEOUT
     return conf
-
-
-create_config()
-config = open(CONF_DIR + CONF_NAME, 'r')
-print(read_config(config.readlines()))
-bye()
