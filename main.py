@@ -7,7 +7,7 @@ from tickets import *
 
 urllib3.disable_warnings()
 
-LOG_FILE = "~/.tickets.log"
+LOG_FILE = str(Path.home()) + "/.tickets.log"
 
 
 def log(text):

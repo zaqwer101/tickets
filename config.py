@@ -19,7 +19,7 @@ TIMEOUT = 10
 
 CONF_DIR = str(Path.home()) + "/.config/tickets/"
 CONF_NAME = "tickets"
-LOG_FILE = "~/.tickets_config.log"
+LOG_FILE = str(Path.home()) + "/.tickets_config.log"
 
 
 def log(text):
