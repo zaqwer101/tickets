@@ -57,7 +57,7 @@ while True:
     # тут обрабатываем тикеты
     for d in new_tickets:
         notify2.Notification(d.client, message=(d.title + "\n-----\nТеперь их " + str(len(tickets)))).show()
-        log(d.title + "(" + d.client + ") " + "- " + d.id)
+        log(d.title + "(" + d.client + ") " + "- " + str(d.id))
 
     old = new_ids
     time.sleep(TIMEOUT)
