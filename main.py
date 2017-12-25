@@ -7,14 +7,15 @@ from tickets import *
 
 urllib3.disable_warnings()
 
-
 LOG_FILE = "tickets.log"
-LOG = open(LOG_FILE, "w")
 
 
 def log(text):
+    LOG = open(LOG_FILE, "w")
     text = time.ctime() + ": " + text
     LOG.write(text + "\n")
+    LOG.close()
+
 
 def get_tickets_ids(tickets):
     ids = {}

@@ -20,12 +20,13 @@ TIMEOUT = 10
 CONF_DIR = str(Path.home()) + "/.config/tickets/"
 CONF_NAME = "tickets"
 LOG_FILE = "tickets_config.log"
-LOG = open(LOG_FILE, "w")
 
 
 def log(text):
+    LOG = open(LOG_FILE, "w")
     text = time.ctime() + ": " + text
     LOG.write(text + "\n")
+    LOG.close()
 
 
 def oops(e):
