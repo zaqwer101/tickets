@@ -1,8 +1,11 @@
 import requests
 from bs4 import BeautifulSoup
-
+import time
+import notify2
+import os
 from config import *
 
+config = read_config()
 
 class Ticket:
     def __init__(self, id, title, client, is_unread):
@@ -14,17 +17,17 @@ class Ticket:
 
 # получаем XML от биллинга
 # TODO: переделать авторизацию на сессии
-def get_response():
-    return requests.get(URL + "?", params={
+def get_response(login, password, url):
+    return requests.get(url + "?", params={
         'func': 'ticket',
         'out': 'xml',
-        'authinfo': LOGIN + ":" + PASS
+        'authinfo': login + ":" + password
     }, verify=False).content
 
 
 # получаем список тикетов, построенных в класс Ticket
 def get_tickets():
-    response = get_response()
+    response = get_response(config["LOGIN"], config["PASSWORD"], config["URL"])
     soup = BeautifulSoup(response, "xml")
     tickets = soup.find_all("elem")
     list = []

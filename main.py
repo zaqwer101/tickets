@@ -1,8 +1,20 @@
 #!/usr/bin/env python3
 import time
-import notify2
+
+import urllib3
 
 from tickets import *
+
+urllib3.disable_warnings()
+
+LOG_FILE = "tickets.log"
+
+
+def log(text):
+    LOG = open(LOG_FILE, "w")
+    text = time.ctime() + ": " + text
+    LOG.write(text + "\n")
+    LOG.close()
 
 
 def get_tickets_ids(tickets):
@@ -17,7 +29,7 @@ old = get_tickets_ids(get_tickets()).keys()
 
 print(old)
 diff = []
-
+log("Работаем")
 while True:
     notify2.init("Тикет")
 
@@ -44,7 +56,8 @@ while True:
 
     # тут обрабатываем тикеты
     for d in new_tickets:
-        notify2.Notification(d.client, message=d.title).show()
+        notify2.Notification(d.client, message=(d.title + "\n-----\nТеперь их " + str(len(tickets)))).show()
+        log(d.title + "(" + d.client + ") " + "- " + str(d.id))
 
     old = new_ids
     time.sleep(TIMEOUT)
