@@ -1,10 +1,20 @@
 #!/usr/bin/env python3
-import datetime
+import time
 
 import urllib3
 
 from tickets import *
+
 urllib3.disable_warnings()
+
+
+LOG_FILE = "tickets.log"
+LOG = open(LOG_FILE, "w")
+
+
+def log(text):
+    text = time.ctime() + ": " + text
+    LOG.write(text + "\n")
 
 def get_tickets_ids(tickets):
     ids = {}
@@ -45,8 +55,8 @@ while True:
 
     # тут обрабатываем тикеты
     for d in new_tickets:
-        notify2.Notification(d.client, message=(d.title + "\nТеперь их " + len(tickets))).show()
-        log(datetime.date.today() + ": " + d.title)
+        notify2.Notification(d.client, message=(d.title + "\n-----\nТеперь их " + str(len(tickets)))).show()
+        log(d.title + "(" + d.client + ") " + "- " + d.id)
 
     old = new_ids
     time.sleep(TIMEOUT)

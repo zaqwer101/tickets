@@ -10,6 +10,8 @@ import os
 from os.path import exists
 
 # дефайним Изначальные Директивы
+import time
+
 LOGIN = ""
 PASSWORD = ""
 URL = "https://my.ispsystem.com/billmgr?"
@@ -17,10 +19,13 @@ TIMEOUT = 10
 
 CONF_DIR = str(Path.home()) + "/.config/tickets/"
 CONF_NAME = "tickets"
+LOG_FILE = "tickets_config.log"
+LOG = open(LOG_FILE, "w")
 
 
 def log(text):
-    print(text)
+    text = time.ctime() + ": " + text
+    LOG.write(text + "\n")
 
 
 def oops(e):
