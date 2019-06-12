@@ -1,9 +1,3 @@
-##################
-# DON'T USE THE FORCE, TRY TO THINK
-# AND REMEMBER
-#   JUST MONIKA
-##################
-
 import re
 from pathlib import Path
 import os
@@ -87,9 +81,8 @@ def create_config(_LOGIN=LOGIN, _PASSWORD=PASSWORD, _URL=URL, _TIMEOUT='10'):
     print("\nДа будет так.")
 
 
-# Работает отличненько, но:
 # TODO: Валидатор вводимых значений
-def read_config():  # крутой алгоритм, над которым я работал несколько дней (я не очень умный)
+def read_config():
     file = open(CONF_DIR + CONF_NAME, 'r')
     config = file.readlines()
     status = check_config()
@@ -117,7 +110,6 @@ def read_config():  # крутой алгоритм, над которым я р
                     conf[var] = val
 
     # теперь нужно проверить, всё ли в конфиге хорошо
-    # Вот тут то и нужен валидатор!
     try:
         conf['TIMEOUT'] = int(conf['TIMEOUT'])
     except Exception as e:
