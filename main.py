@@ -53,7 +53,7 @@ while True:
 
     # тут обрабатываем тикеты
     for d in new_tickets:
-        os.system("notify-send " + d.title + "\n-----\nТеперь их " + str(len(tickets)))
+        os.system("notify-send \"" + d.title + "\n-----\nТеперь их " + str(len(tickets)) + "\"")
         log(d.title + "(" + d.client + ") " + "- " + str(d.id))
 
     old = new_ids
