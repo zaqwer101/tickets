@@ -30,13 +30,13 @@ def oops(e):
 def check_config():
     if exists(CONF_DIR):
         if exists(CONF_DIR + CONF_NAME):
-            log("Конфиг найден, отлично!")
+            log("Конфиг найден")
             return True
         else:
-            log("Конфиг не найдет, не отлично!")
+            log("Конфиг не найден")
             return False
     else:
-        log("Директория конфига не найдена, не отлично!")
+        log("Директория конфига не найдена")
         return False
 
 
@@ -54,17 +54,17 @@ def create_config(_LOGIN=LOGIN, _PASSWORD=PASSWORD, _URL=URL, _TIMEOUT='10'):
 
     file = open(CONF_DIR + CONF_NAME, 'w')
     print(
-        "Создал дефолтный конфиг в " + CONF_DIR + CONF_NAME + ', но дальше вы не пройдете, пока не заполните бумаги:\n')
+        "Создал дефолтный конфиг в " + CONF_DIR + CONF_NAME + ', необходимо заполнить параметры:\n')
     url = input("URL биллинга? (По умолчанию - ISPsystem)\n")
     login = input("Логин в биллинге?\n")
     password = input("Пароль от аккаунта?\n")
     q = input("Дефолтный таймаут опроса биллинга - 10 секунд. Пойдёт? (y/n) ")
     if q == 'y':
-        print("Отлично, да будет так.")
+        print("Да будет так.")
     elif q == 'n':
-        print("Ну тогда сам руками поменяешь в конфиге.\n")
+        print("Необходимо изменение конфига вручную\n")
     else:
-        print("Ты бы ещё консервных банок насобирал! Будет по умолчанию значит.\n")
+        print("Будет по умолчанию.\n")
 
     if url != '':
         _URL = url
@@ -83,13 +83,17 @@ def create_config(_LOGIN=LOGIN, _PASSWORD=PASSWORD, _URL=URL, _TIMEOUT='10'):
 
 # TODO: Валидатор вводимых значений
 def read_config():
-    file = open(CONF_DIR + CONF_NAME, 'r')
+    try:
+        file = open(CONF_DIR + CONF_NAME, 'r')
+    except:
+        create_config()
+        file = open(CONF_DIR + CONF_NAME, 'r')
     config = file.readlines()
     status = check_config()
     if status:
-        log("Ок, читаем конфиг")
+        log("Читаем конфиг...")
     else:
-        log("А мне не понравился конфиг, создадим новый")
+        log("Конфиг содержит ошибки, пересоздаём")
         create_config()
     conf = {}
     for line in config:
