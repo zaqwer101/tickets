@@ -10,7 +10,6 @@ LOGIN = ""
 PASSWORD = ""
 URL = "https://my.ispsystem.com/billmgr?"
 TIMEOUT = 10
-
 CONF_DIR = str(Path.home()) + "/.config/tickets/"
 CONF_NAME = "tickets"
 LOG_FILE = str(Path.home()) + "/.tickets_config.log"
@@ -21,6 +20,7 @@ def log(text):
     text = time.ctime() + ": " + text
     LOG.write(text + "\n")
     LOG.close()
+    print(text)
 
 
 def oops(e):
@@ -119,4 +119,5 @@ def read_config():
     except Exception as e:
         log("Ошибка при попытке конвертации типа директивы TIMEOUT")
         conf['TIMEOUT'] = TIMEOUT
+    log("Конфиг в порядке")
     return conf

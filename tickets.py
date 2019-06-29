@@ -7,11 +7,12 @@ from config import *
 config = read_config()
 
 class Ticket:
-    def __init__(self, id, title, client, is_unread):
+    def __init__(self, id, title, client, is_unread, ticket):
         self.id = id
         self.is_unread = is_unread
         self.title = title
         self.client = client
+        self.ticket = ticket
 
 
 # получаем XML от биллинга
@@ -34,13 +35,16 @@ def get_tickets():
         id = ticket.find_all("id")[0].string
         client = ticket.find_all("client")[0].string
         title = ticket.find_all("name")[0].string
+        ticket = ticket.find_all("ticket")[0].string
+
         try:
             unread = ticket.find_all("unread")[0].string
         except:
             unread = "off"
+
         if unread == "on":
             is_unread = True
         else:
             is_unread = False
-        list.append(Ticket(id, title, client, is_unread))
+        list.append(Ticket(id, title, client, is_unread, ticket))
     return list

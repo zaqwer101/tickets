@@ -16,10 +16,10 @@ def log(text):
 
 
 def get_tickets_ids(tickets):
-    ids = {}
+    _tickets = {}
     for ticket in tickets:
-        ids[int(ticket.id)] = ticket
-    return ids
+        _tickets[int(ticket.ticket)] = ticket
+    return _tickets
 
 
 # получаем id всех активных в данный момент тикетов
@@ -27,7 +27,7 @@ old = get_tickets_ids(get_tickets()).keys()
 
 print(old)
 diff = []
-log("Работаем")
+
 while True:
 
     # получаем список всех тикетов
@@ -54,7 +54,7 @@ while True:
     # тут обрабатываем тикеты
     for d in new_tickets:
         os.system("notify-send \"" + d.title + "\n-----\nТеперь их " + str(len(tickets)) + "\"")
-        log(d.title + "(" + d.client + ") " + "- " + str(d.id))
+        log(d.title + "(" + d.client + ") " + "- " + str(d.ticket))
 
     old = new_ids
     time.sleep(TIMEOUT)
