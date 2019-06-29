@@ -47,9 +47,7 @@ while True:
     new_tickets = []
 
     for i in diff:
-        # если тикет новый, но уже был прочитан, не считаем его новым
-        if new[i].is_unread:
-            new_tickets.append(new[i])
+        new_tickets.append(new[i])
 
     # тут обрабатываем тикеты
     for d in new_tickets:

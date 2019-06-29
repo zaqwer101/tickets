@@ -6,6 +6,7 @@ from config import *
 
 config = read_config()
 
+
 class Ticket:
     def __init__(self, id, title, client, is_unread, ticket):
         self.id = id
@@ -17,17 +18,24 @@ class Ticket:
 
 # получаем XML от биллинга
 # TODO: переделать авторизацию на сессии
-def get_response(login, password, url):
-    return requests.get(url + "?", params={
-        'func': 'ticket',
+def api_get(login, password, url, func, additional_params={ }):
+    request_params = {
+        'func': func,
         'out': 'xml',
         'authinfo': login + ":" + password
-    }, verify=False).content
+    }
+
+    for key in additional_params:
+        request_params[key] = additional_params[key]
+
+    content = requests.get(url + "?", params=request_params, verify=False).content
+
+    return content
 
 
 # получаем список тикетов, построенных в класс Ticket
 def get_tickets():
-    response = get_response(config["LOGIN"], config["PASSWORD"], config["URL"])
+    response = api_get(config["LOGIN"], config["PASSWORD"], config["URL"], "ticket", additional_params={})
     soup = BeautifulSoup(response, "xml")
     tickets = soup.find_all("elem")
     list = []
