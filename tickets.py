@@ -76,8 +76,9 @@ def get_ticket_messages(elid):
     messages = soup.find_all("elem")
     list = []
     for message in messages:
-        id = message.find_all("id")[0].string
-        message_user = message.find_all("message_user")[0].string
-        date_post = message.find_all("date_post")[0].string
-        _message = message.find_all("message")[0].string
-    list.append(message(id, message_user, date_post, _message))
+        id = str(message.find_all("id")[0].string)
+        message_user = str(message.find_all("message_user")[0].string)
+        date_post = str(message.find_all("date_post")[0].string)
+        _message = str(message.find_all("message")[0].string)
+        list.append(Message(id, message_user, date_post, _message))
+    return list
