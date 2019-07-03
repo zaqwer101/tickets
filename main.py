@@ -1,7 +1,6 @@
 from core import *
+import timeit
 
-start()
+start() # запускаем поток обработки тикетов в фоновом режиме
 
-while True:
-    # do some stuff
-    pass
+thread.join()

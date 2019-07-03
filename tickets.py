@@ -45,6 +45,13 @@ def api_get(func, additional_params={}):
     return content
 
 
+def get_tickets_ids(tickets):
+    _tickets = {}
+    for ticket in tickets:
+        _tickets[int(ticket.ticket)] = ticket
+    return _tickets
+
+
 # получаем список тикетов, построенных в класс Ticket
 def get_tickets():
     response = api_get("ticket", additional_params={})
@@ -71,6 +78,11 @@ def get_tickets():
 
 
 def get_ticket_messages(elid):
+    """
+    Получить сообщения тикета в виде списка экземпляров класса Message
+    :param elid: elid тикета
+    :return: list элементов типа Message
+    """
     response = api_get("ticket_all.message", {"elid": elid})
     soup = BeautifulSoup(response, "xml")
     messages = soup.find_all("elem")
@@ -82,3 +94,10 @@ def get_ticket_messages(elid):
         _message = str(message.find_all("message")[0].string)
         list.append(Message(id, message_user, date_post, _message))
     return list
+
+
+def find_ticket_by_ticket(tickets, id):
+    for ticket in tickets:
+        if ticket.ticket == id:
+            return ticket
+    return None
