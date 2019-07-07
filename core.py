@@ -58,7 +58,7 @@ def main_loop():
     while True:
         old_tickets = get_tickets()
         old_ids = get_tickets_ids(old_tickets)
-        time.sleep(5)
+        time.sleep(TIMEOUT)
         new_tickets = get_tickets()
         new_ids = get_tickets_ids(new_tickets)
 
