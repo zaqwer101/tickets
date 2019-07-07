@@ -120,4 +120,5 @@ def read_config():
         log("Ошибка при попытке конвертации типа директивы TIMEOUT")
         conf['TIMEOUT'] = TIMEOUT
     log("Конфиг в порядке")
+    log(conf['URL'] + " " + conf['LOGIN'])
     return conf

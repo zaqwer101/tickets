@@ -17,11 +17,12 @@ class Ticket:
 
 
 class Message:
-    def __init__(self, id, message_user, date_post, message):
+    def __init__(self, id, message_user, date_post, message, first_message=False):
         self.id = id
         self.message_user = message_user
         self.date_post = date_post
         self.message = message
+        self.first_message = first_message
 
 
 # получаем XML от биллинга
@@ -62,7 +63,7 @@ def get_tickets():
         id = ticket.find_all("id")[0].string
         client = ticket.find_all("client")[0].string
         title = ticket.find_all("name")[0].string
-        ticket = ticket.find_all("ticket")[0].string
+        _ticket = ticket.find_all("ticket")[0].string
 
         try:
             unread = ticket.find_all("unread")[0].string
@@ -73,7 +74,7 @@ def get_tickets():
             is_unread = True
         else:
             is_unread = False
-        list.append(Ticket(id, title, client, is_unread, ticket))
+        list.append(Ticket(id, title, client, is_unread, _ticket))
     return list
 
 
@@ -92,12 +93,17 @@ def get_ticket_messages(elid):
         message_user = str(message.find_all("message_user")[0].string)
         date_post = str(message.find_all("date_post")[0].string)
         _message = str(message.find_all("message")[0].string)
-        list.append(Message(id, message_user, date_post, _message))
+        first_message = str(message.find_all("first_message")[0].string)
+        if first_message == "on":
+            first_message = True
+        else:
+            first_message = False
+        list.append(Message(id, message_user, date_post, _message, first_message=first_message))
     return list
 
 
-def find_ticket_by_ticket(tickets, id):
+def find_ticket_by_ticket(tickets, ticket_id):
     for ticket in tickets:
-        if ticket.ticket == id:
+        if str(ticket.ticket) == str(ticket_id):
             return ticket
     return None
